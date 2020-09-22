@@ -41,18 +41,12 @@ public class PasswordResetDialog extends DialogFragment {
         mContext = getActivity();
         mAuth = FirebaseAuth.getInstance();
 
+        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
         TextView confirmDialog = view.findViewById(R.id.dialogConfirm);
         confirmDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!isEmpty(mEmail.getText().toString())){
-                    if(!mAuth.getCurrentUser().getEmail().equals(mEmail.getText().toString())){
-                        getDialog().dismiss();
-                        new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
-                                .setTitleText("Wrong Email")
-                                .setContentText( "You are logged in with a different email!")
-                                .show();
-                    }
                     Log.d(TAG, "onClick: attempting to send reset link to: " + mEmail.getText().toString());
                     sendPasswordResetEmail(mEmail.getText().toString());
                     getDialog().dismiss();
@@ -77,7 +71,7 @@ public class PasswordResetDialog extends DialogFragment {
                             Log.d(TAG, "onComplete: Password Reset Email sent.");
                             new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("Reset Successful")
-                                    .setContentText( "Password Reset Link Sent to Email")
+                                    .setContentText( "Password Reset Link Sent to provided email")
                                     .show();
                         }else{
                             Log.d(TAG, "onComplete: No user associated with that email.");

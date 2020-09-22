@@ -36,6 +36,7 @@ public class ResendVerificationDialog extends DialogFragment {
     //vars
     private Context mContext;
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Nullable
     @Override
@@ -46,8 +47,10 @@ public class ResendVerificationDialog extends DialogFragment {
         mContext = getActivity();
         mAuth = FirebaseAuth.getInstance();
 
+        FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
 
 
+        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
         TextView confirmDialog = view.findViewById(R.id.dialogConfirm);
         confirmDialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +66,6 @@ public class ResendVerificationDialog extends DialogFragment {
                 }else{
                     Toast.makeText(mContext, "all fields must be filled out", Toast.LENGTH_SHORT).show();
                 }
-
 
             }
         });
@@ -82,7 +84,7 @@ public class ResendVerificationDialog extends DialogFragment {
      * @param password
      */
     private void authenticateAndResendEmail(String email, String password) {
-        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        AuthCredential credential = EmailAuthProvider.getCredential(email.trim(), password.trim());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -92,10 +94,6 @@ public class ResendVerificationDialog extends DialogFragment {
                             sendVerificationEmail();
                             mAuth.signOut();
                             getDialog().dismiss();
-                        }else {
-                            new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Something went wrong")
-                                    .show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -122,7 +120,9 @@ public class ResendVerificationDialog extends DialogFragment {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(mContext, "Sent Verification Email", Toast.LENGTH_SHORT).show();
+                                new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("Re-sent Verification Email")
+                                        .show();
                             }
                             else{
                                 new SweetAlertDialog(mContext, SweetAlertDialog.ERROR_TYPE)
