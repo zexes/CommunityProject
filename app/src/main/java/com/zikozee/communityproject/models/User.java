@@ -1,6 +1,6 @@
 package com.zikozee.communityproject.models;
 
-public class User {
+public class User {//TODO implement profile update
     private String name;
     private String phone;
     private String profile_image;

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CommunityProject</string>
+    <string name="app_name">Transport Adviser</string>
 
     <string name="community_project_logo">Community Project Logo</string>
     <string name="resend_verification_email">Resend Verification Email</string>
@@ -15,6 +15,16 @@
     <string name="reset_password">Reset Password</string>
     <string name="confirm">CONFIRM</string>
     <string name="cancel">CANCEL</string>
+    <string name="available_boarding_locations">Available Boarding Locations</string>
+    <string name="error_loading_data_from_firebase">Error Loading data from Firebase</string>
+    <string name="routes">Routes</string>
+    <string name="fare">Fare</string>
+    <string name="next">Next</string>
+    <string name="vendors">Vendors:</string>
+    <string name="sign_out">Sign out</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="save">Save</string>
+    <string name="change_password">Change Password</string>
 
 
 </resources>
