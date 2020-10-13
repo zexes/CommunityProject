@@ -1,5 +1,7 @@
 package com.zikozee.communityproject.models;
 
+import android.util.Log;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -7,7 +9,10 @@ public class Location {
     private String start;
     private String destinationState;
     private String destinationCity;
-    private double fare_price;
+    private String fare_price;
+
+    public Location() {
+    }
 
     private Location(Builder builder) {
         start = builder.start;
@@ -27,11 +32,13 @@ public class Location {
 
     public Location fromMap(Object obj){
         Map<String, Object> locationObject = (Map<String, Object>)obj;
+        String farePrice = (String)locationObject.get("fare_price");
+
         return new Builder()
                 .start((String)locationObject.get("start"))
                 .destinationState((String)locationObject.get("destinationState"))
                 .destinationCity((String)locationObject.get("destinationCity"))
-                .fare_price((double)locationObject.get("fare_price"))
+                .fare_price(farePrice)
                 .build();
     }
 
@@ -39,7 +46,7 @@ public class Location {
         private String start;
         private String destinationState;
         private String destinationCity;
-        private double fare_price;
+        private String fare_price;
 
         public Builder() {
         }
@@ -59,7 +66,7 @@ public class Location {
             return this;
         }
 
-        public Builder fare_price(double val) {
+        public Builder fare_price(String val) {
             fare_price = val;
             return this;
         }
@@ -93,11 +100,11 @@ public class Location {
         this.destinationCity = destinationCity;
     }
 
-    public double getFare_price() {
+    public String getFare_price() {
         return fare_price;
     }
 
-    public void setFare_price(double fare_price) {
+    public void setFare_price(String fare_price) {
         this.fare_price = fare_price;
     }
 }

@@ -6,6 +6,9 @@ public class User {//TODO implement profile update
     private String profile_image;
     private String user_id;
 
+    public User() {
+    }
+
     public User(String name, String phone, String profile_image) {
         this.name = name;
         this.phone = phone;

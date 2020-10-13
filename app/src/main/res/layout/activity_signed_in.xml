@@ -16,6 +16,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
+        android:background="@drawable/spinner_background"
+        android:gravity="center"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -70,7 +72,7 @@
         android:layout_height="36dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/vendors"
         android:textSize="18sp"
@@ -80,7 +82,7 @@
 
     <FrameLayout
         android:id="@+id/location_holder_fragment"
-        android:name="com.zikozee.communityproject.location.LocationFragment"
+        android:name="com.zikozee.communityproject.boardingLocation.LocationFragment"
         android:layout_width="383dp"
         android:layout_height="186dp"
         android:layout_marginTop="4dp"

@@ -25,6 +25,14 @@
     <string name="account_settings">Account Settings</string>
     <string name="save">Save</string>
     <string name="change_password">Change Password</string>
+    <string name="choose_photo_from_memory">Choose photo from memory</string>
+    <string name="take_a_photo">Take a Photo</string>
+    <string name="dbnode_transport_users">transportUsers</string>
+    <string name="field_name">name</string>
+    <string name="field_phone">phone</string>
+    <string name="dialog_change_photo">ChangePhotoDialog</string>
+    <string name="field_profile_image">profile_image</string>
+    <string name="field_user_id">user_id</string>
 
 
 </resources>

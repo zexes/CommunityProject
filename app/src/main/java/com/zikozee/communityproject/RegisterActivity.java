@@ -55,8 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
                     && !isEmpty(mPassword.getText().toString())
                     && !isEmpty(mConfirmPassword.getText().toString())) {
 
-                //check if user has a company email address
-                if (isValidDomain(mEmail.getText().toString())) {
+                //verify user's email
+                if (isValidEmail(mEmail.getText().toString())) {
 
                     //check if passwords match
                     if (doStringsMatch(mPassword.getText().toString(), mConfirmPassword.getText().toString())) {
@@ -193,12 +193,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
-     * Returns True if the user's email contains '@tabian.ca'
+     * Returns True if the user's email conforms 'RFC5321'
      *
      * @param email
      * @return
      */
-    private boolean isValidDomain(String email) {
+    public static boolean isValidEmail(String email) {
         Log.d(TAG, "isValidDomain: verifying email has correct domain: " + email);
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }

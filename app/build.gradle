@@ -2,7 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    defaultConfig {
+        // Required when setting minSdkVersion to 20 or lower
+        multiDexEnabled true
+    }
+
     compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+        // Sets Java compatibility to Java 8
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -30,16 +38,29 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    implementation 'com.google.firebase:firebase-auth:19.4.0'
-    implementation 'com.google.firebase:firebase-database:19.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //Firebase Authentication
+    implementation 'com.google.firebase:firebase-auth:19.4.0'
+
+    //Firebase Database
+    implementation 'com.google.firebase:firebase-database:19.5.0'
 
     //alert dialog
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+
+    //Universal Image Loader
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
+    //Firebase Storage
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
+
 }

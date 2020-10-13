@@ -5,53 +5,43 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.zikozee.communityproject.location.LocationFragment;
-import com.zikozee.communityproject.models.Location;
-import com.zikozee.communityproject.models.State;
+import com.zikozee.communityproject.boarding.BoardingLocationFragment;
 import com.zikozee.communityproject.models.Vendor;
 import com.zikozee.communityproject.route.RouteFragment;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.net.URL;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
-public class SignedInActivity extends AppCompatActivity{
+public class SignedInActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final String TAG = "SignedInActivity";
-    private DatabaseReference mDatabase;
+    private String chosenText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signed_in);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        LocationFragment locationFragment = new LocationFragment();
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction()
-                .replace(R.id.location_holder_fragment, locationFragment, locationFragment.getTag())
-                .commit();
+        try {
+            URL vendorURL = ApiUtil.buildUrl("/vendors");
+            new VendorQueryTask().execute(vendorURL);
+        }catch (Exception e){
+            Log.d("error", e.getMessage());
+        }
 
-        RouteFragment routeFragment = new RouteFragment();
-        manager.beginTransaction()
-                .replace(R.id.route_holder_fragment, routeFragment, routeFragment.getTag())
-                .commit();
 
     }
 
@@ -65,9 +55,12 @@ public class SignedInActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.optionSignOut:
                 signOut();
+                intent = new Intent(SignedInActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
                 return true;
             case R.id.optionAccountSettings:
                 intent = new Intent(SignedInActivity.this, SettingsActivity.class);
@@ -78,7 +71,7 @@ public class SignedInActivity extends AppCompatActivity{
         }
     }
 
-    private void signOut(){
+    private void signOut() {
         Log.d(TAG, "signOut: signing out");
         FirebaseAuth.getInstance().signOut();
     }
@@ -87,119 +80,85 @@ public class SignedInActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         checkAuthenticationState();
-//        PopulateFireStore();
-        getVendorsByName();
+//        populateFireStore();
     }
 
 
     //place in every activity to ensure user is authenticated
-    private void checkAuthenticationState(){
+    private void checkAuthenticationState() {
         Log.d(TAG, "checkAuthenticationState: checking authentication state.");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(user == null){
+        if (user == null) {
             Log.d(TAG, "checkAuthenticationState: user is null, navigating back to login screen.");
 
             Intent intent = new Intent(SignedInActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);//THIS FLAG CLEARS OUT THE ACTIVITY STACK SO USER CANNOT PRESS BACK BUTTON
             startActivity(intent);
             finish();
-        }else{
+        } else {
             Log.d(TAG, "checkAuthenticationState: user is authenticated.");
         }
     }
 
-    private void PopulateFireStore(){
-        Location location = new Location.Builder()
-                .start("yaba")
-                .destinationCity("benin")
-                .destinationState("Edo")
-                .fare_price(5000.0)
-                .build();
-
-        Location location2 = new Location.Builder()
-                .start("Ikorodu")
-                .destinationCity("Maiduguri")
-                .destinationState("Edo")
-                .fare_price(4800.05)
-                .build();
-
-        State state = new State.Builder()
-                .location(new ArrayList<>(Arrays.asList(location, location2)))
-                .name("Lagos")
-                .build();
-
-        State state2 = new State.Builder()
-                .location(new ArrayList<>(Arrays.asList(location, location2)))
-                .name("Edo")
-                .build();
-        Vendor vendor1 = new Vendor.Builder()
-                .vendorName("God is Good")
-                .state(new ArrayList<>(Arrays.asList(state, state2)))
-                .headOfficeContact("24 sakpomba road benin-city Edo state")
-                .build();
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        chosenText = parent.getItemAtPosition(position).toString();
+        Log.d(TAG, "data is " + chosenText);
+        Toast.makeText(parent.getContext(), chosenText, Toast.LENGTH_LONG).show();
 
 
-        Location location3 = new Location.Builder()
-                .start("yaba")
-                .destinationCity("benin")
-                .destinationState("Edo")
-                .fare_price(5000.0)
-                .build();
+        BoardingLocationFragment boardingLocationFragment = new BoardingLocationFragment(chosenText);
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .replace(R.id.location_holder_fragment, boardingLocationFragment, boardingLocationFragment.getTag())
+                .commit();
 
-        Location location4 = new Location.Builder()
-                .start("Ikorodu")
-                .destinationCity("Maiduguri")
-                .destinationState("Edo")
-                .fare_price(4800.05)
-                .build();
+        RouteFragment routeFragment = new RouteFragment();
+        manager.beginTransaction()
+                .replace(R.id.route_holder_fragment, routeFragment, routeFragment.getTag())
+                .commit();
 
-        State state3 = new State.Builder()
-                .location(new ArrayList<>(Arrays.asList(location3, location4)))
-                .name("Lagos")
-                .build();
+    }
 
-        State state4 = new State.Builder()
-                .location(new ArrayList<>(Arrays.asList(location, location2)))
-                .name("Edo")
-                .build();
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
-        Vendor vendor2 = new Vendor.Builder()
-                .vendorName("Ifesinachi Transport Ltd")
-                .state(new ArrayList<>(Arrays.asList(state3, state4)))
-                .headOfficeContact("23 Godwills road yaba lagos")
-                .build();
+    }
 
-        List<Vendor> vendors = new ArrayList<>(Arrays.asList(vendor1,vendor2));
 
-        for(Vendor vendor: vendors){
-            mDatabase.child("vendors")
-//                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .push()
-                    .setValue(vendor);
+    public class VendorQueryTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            URL searchURL = urls[0];
+            String result = null;
+
+            try{
+                result = ApiUtil.getJson(searchURL);
+            }catch (Exception e){
+                Log.e("error", e.toString());
+            }
+
+            return result;
         }
 
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            List<Vendor> vendors = ApiUtil.getVendorFromJson(result);
+
+            List<String> vendorNames = vendors.stream()
+                    .map(Vendor::getName)
+                    .collect(Collectors.toList());
+
+            Spinner spinner = findViewById(R.id.spinner);
+            spinner.setOnItemSelectedListener(SignedInActivity.this);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(SignedInActivity.this, android.R.layout.simple_spinner_item, vendorNames);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+        }
     }
-
-    private void getVendorsByName() {
-        Query query1 = mDatabase.child("vendors/names")
-                .orderByKey();
-        query1.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Map<String, String> values = (Map<String, String>)snapshot.getValue();
-                for(Entry<String, String> entry: values.entrySet()){
-                    Log.d(TAG, entry.getValue());
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
 }
