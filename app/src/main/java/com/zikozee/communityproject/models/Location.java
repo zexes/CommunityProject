@@ -1,7 +1,5 @@
 package com.zikozee.communityproject.models;
 
-import android.util.Log;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 

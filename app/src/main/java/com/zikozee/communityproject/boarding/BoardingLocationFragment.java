@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,11 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zikozee.communityproject.ApiUtil;
 import com.zikozee.communityproject.R;
+import com.zikozee.communityproject.SignedInActivity;
 import com.zikozee.communityproject.models.State;
 import com.zikozee.communityproject.models.Vendor;
+import com.zikozee.communityproject.route.Route;
+import com.zikozee.communityproject.route.RouteFragment;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -68,6 +74,26 @@ public class BoardingLocationFragment extends Fragment {
         }catch (Exception e){
             Log.d("error", e.getMessage());
         }
+
+
+//        myRecyclerView.addOnItemTouchListener(
+//                new BoardingLocationRecyclerItemClickListener(context, myRecyclerView ,new BoardingLocationRecyclerItemClickListener.OnItemClickListener() {
+//                    @Override public void onItemClick(View view, int position) {
+//                        // do whatever
+//                        Toast.makeText(context, chosenText, Toast.LENGTH_SHORT).show();
+//
+//                        RouteFragment routeFragment = new RouteFragment(chosenText);
+//                        FragmentManager manager =  ((AppCompatActivity) context).getSupportFragmentManager();
+//                        manager.beginTransaction()
+//                                .replace(R.id.route_holder_fragment, routeFragment, routeFragment.getTag())
+//                                .commit();
+//                    }
+//
+//                    @Override public void onLongItemClick(View view, int position) {
+//                        // do whatever
+//                    }
+//                })
+//        );
 
 
         return v;
@@ -140,7 +166,7 @@ public class BoardingLocationFragment extends Fragment {
             Log.d(TAG, boardingLocations.toString());
 
 
-            BoardingLocationAdapter adapter = new BoardingLocationAdapter(boardingLocations);
+            BoardingLocationAdapter adapter = new BoardingLocationAdapter(boardingLocations, chosenText);
             myRecyclerView.setAdapter(adapter);
         }
     }

@@ -3,6 +3,7 @@ package com.zikozee.communityproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -41,8 +42,6 @@ public class SignedInActivity extends AppCompatActivity implements AdapterView.O
         }catch (Exception e){
             Log.d("error", e.getMessage());
         }
-
-
     }
 
     @Override
@@ -115,10 +114,7 @@ public class SignedInActivity extends AppCompatActivity implements AdapterView.O
                 .replace(R.id.location_holder_fragment, boardingLocationFragment, boardingLocationFragment.getTag())
                 .commit();
 
-        RouteFragment routeFragment = new RouteFragment();
-        manager.beginTransaction()
-                .replace(R.id.route_holder_fragment, routeFragment, routeFragment.getTag())
-                .commit();
+
 
     }
 
