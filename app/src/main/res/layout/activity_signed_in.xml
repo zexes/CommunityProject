@@ -22,40 +22,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="161dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:background="@drawable/button_rounded_corner"
-        android:text="@string/next"
-        android:textColor="@android:color/background_light"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/route_holder_fragment" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="130dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="12dp"
-        android:background="#B2DDD6"
-        android:gravity="center"
-        android:inputType="none"
-        android:text="@string/fare"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/route_holder_fragment" />
-
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="283dp"
-        android:layout_height="24dp"
+        android:layout_width="368dp"
+        android:layout_height="23dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:inputType="none"
@@ -83,8 +53,8 @@
     <FrameLayout
         android:id="@+id/location_holder_fragment"
         android:name="com.zikozee.communityproject.boardingLocation.LocationFragment"
-        android:layout_width="383dp"
-        android:layout_height="186dp"
+        android:layout_width="375dp"
+        android:layout_height="220dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.586"
@@ -96,8 +66,8 @@
     <FrameLayout
         android:id="@+id/route_holder_fragment"
         android:name="com.zikozee.communityproject.route.RouteFragment"
-        android:layout_width="380dp"
-        android:layout_height="209dp"
+        android:layout_width="381dp"
+        android:layout_height="246dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.423"
@@ -106,8 +76,8 @@
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="254dp"
-        android:layout_height="23dp"
+        android:layout_width="369dp"
+        android:layout_height="27dp"
         android:layout_marginTop="12dp"
         android:gravity="center"
         android:inputType="none"

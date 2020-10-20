@@ -15,9 +15,9 @@
     <string name="reset_password">Reset Password</string>
     <string name="confirm">CONFIRM</string>
     <string name="cancel">CANCEL</string>
-    <string name="available_boarding_locations">Available Boarding Locations</string>
+    <string name="available_boarding_locations">Boarding Locations(Select to Show Routes)</string>
     <string name="error_loading_data_from_firebase">Error Loading data from Firebase</string>
-    <string name="routes">Routes</string>
+    <string name="routes">Routes(Select to make Payment)</string>
     <string name="fare">Fare</string>
     <string name="next">Next</string>
     <string name="vendors">Vendors:</string>
@@ -33,6 +33,12 @@
     <string name="dialog_change_photo">ChangePhotoDialog</string>
     <string name="field_profile_image">profile_image</string>
     <string name="field_user_id">user_id</string>
+    <string name="fare_charge">Fare Charge:</string>
+    <string name="card_number">Card Number:</string>
+    <string name="expiry_month">Expiry Month:</string>
+    <string name="expiry_year">Expiry Year:</string>
+    <string name="cvc">CVC:</string>
+    <string name="make_payment">Make Payment</string>
 
 
 </resources>

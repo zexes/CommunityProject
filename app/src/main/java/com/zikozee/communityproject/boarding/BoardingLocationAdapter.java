@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zikozee.communityproject.R;
-import com.zikozee.communityproject.SignedInActivity;
 import com.zikozee.communityproject.route.RouteFragment;
 
 import java.util.List;

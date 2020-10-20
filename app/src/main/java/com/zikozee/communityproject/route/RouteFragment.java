@@ -34,6 +34,7 @@ public class RouteFragment extends Fragment {
     private RecyclerView myRecyclerView;
     private String chosenText;
     private String currentState;
+    private TextView textView;
 
     View v;
 
@@ -112,6 +113,7 @@ public class RouteFragment extends Fragment {
                             .map(state -> Route.builder()
                                     .setStartState(state.getName())
                                     .setDestinationCity(state.getDestinationCity())
+                                    .setFarePrice(state.getFarePrice())
                                     .build())
                             .collect(Collectors.toList());
                     break;
