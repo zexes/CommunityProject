@@ -29,6 +29,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignedInActivity" />
+
+        <!--Setting paystack public key-->
+        <meta-data
+            android:name="co.paystack.android.PublicKey"
+            android:value="pk_test_4b977b7ba01159b61466ad11001372bd00d5c4f0"/>
     </application>
 
 </manifest>

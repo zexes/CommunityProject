@@ -7,16 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zikozee.communityproject.PaymentActivity;
 import com.zikozee.communityproject.R;
-import com.zikozee.communityproject.boarding.BoardingLocationRecyclerItemClickListener;
 
 import java.util.List;
 
@@ -50,20 +46,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
     public void onBindViewHolder(@NonNull RouteAdapter.RouteViewHolder holder, int position) {
         Route route = mRoutes.get(position);
         holder.bind(route);
-
-        holder.itemView.setOnClickListener(v -> mRecyclerView.addOnItemTouchListener(
-                new BoardingLocationRecyclerItemClickListener(context, mRecyclerView ,new BoardingLocationRecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position1) {
-                        // do whatever
-                        Toast.makeText(context, mRoutes.get(position1).getStartState() +" chosen", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override public void onLongItemClick(View view, int position1) {
-                        // do whatever
-                    }
-                })
-        ));
-
     }
 
     @Override
