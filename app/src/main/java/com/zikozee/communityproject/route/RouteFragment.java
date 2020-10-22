@@ -114,6 +114,8 @@ public class RouteFragment extends Fragment {
                                     .setStartState(state.getName())
                                     .setDestinationCity(state.getDestinationCity())
                                     .setFarePrice(state.getFarePrice())
+                                    .setVendorName(chosenText)
+                                    .setBoardingLocation(state.getStartLocation())
                                     .build())
                             .collect(Collectors.toList());
                     break;

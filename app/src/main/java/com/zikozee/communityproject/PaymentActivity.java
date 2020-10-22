@@ -3,6 +3,7 @@ package com.zikozee.communityproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.zikozee.communityproject.utility.email.SendMailTask;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -25,19 +31,30 @@ import co.paystack.android.model.Charge;
 public class PaymentActivity extends AppCompatActivity implements View.OnClickListener{
     public static final String TAG = "PAYMENT_ACTIVITY";
     private int chargeAmount;
+    private String vendorName;
+    private String start;
+    private String destCity;
+    private String destState;
     private EditText cardText, monthText, yearText, cvvText;
     private Button paymentButton;
+    private FirebaseAuth auth;
+    private LocalDateTime dateTime = LocalDateTime.now();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+        auth = FirebaseAuth.getInstance();
 
         //Initialize SDK
         PaystackSdk.initialize(getApplicationContext());
 
         Intent intent = getIntent();
         double price = intent.getDoubleExtra("fare_price",0.0);
+        vendorName = intent.getStringExtra("vendor");
+        start = intent.getStringExtra("startLocation");
+        destCity = intent.getStringExtra("destinationCity");
+        destState = intent.getStringExtra("destinationState");
         chargeAmount = (int)price *100;
         Toast.makeText(this, "This Price: " + price, Toast.LENGTH_SHORT).show();
 
@@ -121,26 +138,56 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         charge.setEmail("ezekiel.eromosei@gmail.com");
 //        charge.setAccessCode()
 
+        SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
 
         PaystackSdk.chargeCard(PaymentActivity.this, charge, new Paystack.TransactionCallback() {
             @Override
             public void onSuccess(Transaction transaction) {
+                pDialog.dismissWithAnimation();
                 // This is called only after transaction is deemed successful.
                 // Retrieve the transaction, and send its reference to your server
                 // for verification.
-                new SweetAlertDialog(PaymentActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("Successful!")
-                        .setContentText("Transaction Successful!")
-                        .setConfirmText("Back to vendor Screen")
-                        .setConfirmClickListener(sweetAlertDialog -> {
+                String fromEmail = "godlydeveloper84@gmail.com";
+                String fromPassword = "Godly2##@";
+                String toEmails = auth.getCurrentUser().getEmail();
+                String emailSubject = "Transport Adviser Receipt";
+                String emailBody = "<i>Dear Customer,</i><br><br>";
+                emailBody += "Thank you for subscribing for your fare payment via our Platform. Below is the Receipt<br>";
+                emailBody += "Vendor: <b>" + vendorName +"</b><br>";
+                emailBody += "Fare Amount: <b>" + chargeAmount +"</b><br>";
+                emailBody += "Boarding Location: <b>" + start +"</b><br>";
+                emailBody += "Destination State: <b>" + destState +"</b><br>";
+                emailBody += "Destination City: <b>" + destCity +"</b><br>";
+                emailBody += "Date: <b>" + dateTime.format(DateTimeFormatter.ofPattern("d:MMM:uuuu HH:mm:ss")) +"</b><br>";
+
+
+                new SendMailTask(PaymentActivity.this).execute(fromEmail,
+                        fromPassword, toEmails, emailSubject, emailBody);
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                SweetAlertDialog ss = new SweetAlertDialog(PaymentActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                ss.setTitleText("Successful!");
+                ss.setContentText("Transaction Successful!");
+                ss.setConfirmText("Back to vendor Screen");
+                ss.setConfirmClickListener(sweetAlertDialog -> {
                             startActivity(new Intent(PaymentActivity.this, SignedInActivity.class));
                             finish();
-                        })
-                        .show();
+                            ss.dismissWithAnimation();
+                        });
+                ss.show();
             }
 
             @Override
             public void beforeValidate(Transaction transaction) {
+                pDialog.dismissWithAnimation();
                 // This is called only before requesting OTP.
                 // Save reference so you may send to server. If
                 // error occurs with OTP, you should still verify on server.
@@ -148,6 +195,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onError(Throwable error, Transaction transaction) {
+                pDialog.dismissWithAnimation();
                 //handle error here
                 Log.d(TAG, "error: " + error.getLocalizedMessage());
                 new SweetAlertDialog(PaymentActivity.this, SweetAlertDialog.ERROR_TYPE)

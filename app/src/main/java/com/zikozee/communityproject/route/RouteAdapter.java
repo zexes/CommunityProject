@@ -57,6 +57,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
         private final Context context;
         TextView routeView;
         double price;
+        private String vendor;
+        private String startLocation;
+        private String destinationCity;
+        private String destinationState;
 
         public RouteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,6 +74,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
                 + "         \u20A6" + route.getFarePrice());
 
             price = route.getFarePrice();
+            vendor = route.getVendorName();
+            startLocation =route.getBoardingLocation();
+            destinationCity = route.getDestinationCity();
+            destinationState = route.getStartState();
             routeView.setOnClickListener(this);
         }
 
@@ -77,6 +85,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
         public void onClick(View v) {
             final Intent intent = new Intent(context, PaymentActivity.class);
             intent.putExtra("fare_price", price);
+            intent.putExtra("vendor", vendor);
+            intent.putExtra("startLocation", startLocation);
+            intent.putExtra("destinationCity", destinationCity);
+            intent.putExtra("destinationState", destinationState);
 
             context.startActivity(intent);
         }

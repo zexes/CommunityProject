@@ -4,6 +4,8 @@ public class Route {
     private String startState;
     private String destinationCity;
     private double farePrice;
+    private String vendorName;
+    private String boardingLocation;
 
     public Route() {
     }
@@ -12,6 +14,8 @@ public class Route {
         this.startState = builder.startState;
         this.destinationCity = builder.destinationCity;
         this.farePrice = builder.farePrice;
+        this.vendorName = builder.vendorName;
+        this.boardingLocation = builder.boardingLocation;
     }
 
     public static Builder builder() {
@@ -31,10 +35,20 @@ public class Route {
         return farePrice;
     }
 
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public String getBoardingLocation() {
+        return boardingLocation;
+    }
+
     public static class Builder {
         private String startState;
         private String destinationCity;
         private double farePrice;
+        private String vendorName;
+        private String boardingLocation;
 
         private Builder() {
         }
@@ -54,10 +68,22 @@ public class Route {
             return this;
         }
 
+        public Builder setVendorName(String vendorName) {
+            this.vendorName = vendorName;
+            return this;
+        }
+
+        public Builder setBoardingLocation(String boardingLocation) {
+            this.boardingLocation = boardingLocation;
+            return this;
+        }
+
         public Builder of(Route route) {
             this.startState = route.startState;
             this.destinationCity = route.destinationCity;
             this.farePrice = route.farePrice;
+            this.vendorName = route.vendorName;
+            this.boardingLocation = route.boardingLocation;
             return this;
         }
 
