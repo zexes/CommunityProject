@@ -36,9 +36,8 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     private String destCity;
     private String destState;
     private EditText cardText, monthText, yearText, cvvText;
-    private Button paymentButton;
     private FirebaseAuth auth;
-    private LocalDateTime dateTime = LocalDateTime.now();
+    private final LocalDateTime dateTime = LocalDateTime.now();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +54,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         start = intent.getStringExtra("startLocation");
         destCity = intent.getStringExtra("destinationCity");
         destState = intent.getStringExtra("destinationState");
-        chargeAmount = (int)price *100;
+        chargeAmount = (int)price *100;// amount in kobo
         Toast.makeText(this, "This Price: " + price, Toast.LENGTH_SHORT).show();
 
         TextView fare = findViewById(R.id.fare_price_submit);
@@ -65,7 +64,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         monthText = findViewById(R.id.expiry_month);
         yearText = findViewById(R.id.expiry_year);
         cvvText = findViewById(R.id.cvv);
-        paymentButton = findViewById(R.id.pay_now);
+        Button paymentButton = findViewById(R.id.pay_now);
 
         paymentButton.setOnClickListener(this);
     }
@@ -175,7 +174,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
                 SweetAlertDialog ss = new SweetAlertDialog(PaymentActivity.this, SweetAlertDialog.SUCCESS_TYPE);
                 ss.setTitleText("Successful!");
-                ss.setContentText("Transaction Successful!");
+                ss.setContentText("Email Notification Sent");
                 ss.setConfirmText("Back to vendor Screen");
                 ss.setConfirmClickListener(sweetAlertDialog -> {
                             startActivity(new Intent(PaymentActivity.this, SignedInActivity.class));
