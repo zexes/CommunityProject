@@ -30,6 +30,7 @@ import co.paystack.android.model.Charge;
 
 public class PaymentActivity extends AppCompatActivity implements View.OnClickListener{
     public static final String TAG = "PAYMENT_ACTIVITY";
+    private double price;
     private int chargeAmount;
     private String vendorName;
     private String start;
@@ -49,7 +50,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         PaystackSdk.initialize(getApplicationContext());
 
         Intent intent = getIntent();
-        double price = intent.getDoubleExtra("fare_price",0.0);
+        price = intent.getDoubleExtra("fare_price",0.0);
         vendorName = intent.getStringExtra("vendor");
         start = intent.getStringExtra("startLocation");
         destCity = intent.getStringExtra("destinationCity");
@@ -157,7 +158,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
                 String emailBody = "<i>Dear Customer,</i><br><br>";
                 emailBody += "Thank you for subscribing for your fare payment via our Platform. Below is the Receipt<br>";
                 emailBody += "Vendor: <b>" + vendorName +"</b><br>";
-                emailBody += "Fare Amount: <b>" + chargeAmount +"</b><br>";
+                emailBody += "Fare Amount: <b>" + price +"</b><br>";
                 emailBody += "Boarding Location: <b>" + start +"</b><br>";
                 emailBody += "Destination State: <b>" + destState +"</b><br>";
                 emailBody += "Destination City: <b>" + destCity +"</b><br>";
