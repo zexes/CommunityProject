@@ -398,7 +398,7 @@ public class SettingsActivity extends AppCompatActivity implements
                     User user = singleSnapshot.getValue(User.class);
                     mName.setText(user.getName());
                     mPhone.setText(user.getPhone());
-//                    ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(SettingsActivity.this));
+                    ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(SettingsActivity.this));
                     ImageLoader.getInstance().displayImage(user.getProfile_image(), mProfileImage);
                 }
             }
